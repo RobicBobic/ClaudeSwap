@@ -1,38 +1,1335 @@
-.App {
-  text-align: center;
+/* Import Modern Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+/* ==========================================================================
+   CLAUDE BRAND COLORS - CORAL/SALMON THEME
+   ========================================================================== */
+:root {
+  --claude-coral: #E67E60;
+  --claude-coral-light: #F09478;
+  --claude-coral-dark: #D86A4D;
+  --claude-salmon: #F28B6A;
+  --claude-warm: #F5A088;
+  --dark-bg: #1A1A1A;
+  --darker-bg: #0F0F0F;
+  --light-bg: #FFF7ED;
+  --accent-glow: rgba(230, 126, 96, 0.3);
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* ==========================================================================
+   GLOBAL STYLES & ANIMATIONS
+   ========================================================================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+@keyframes pulse {
+  0%, 100% { transform: rotate(45deg) scale(1); opacity: 1; }
+  50% { transform: rotate(45deg) scale(1.1); opacity: 0.8; }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes slideIn {
+  from { transform: translateX(-100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 20px var(--accent-glow), 0 0 40px rgba(230, 126, 96, 0.1); }
+  50% { box-shadow: 0 0 30px var(--accent-glow), 0 0 60px rgba(230, 126, 96, 0.15); }
+}
+
+@keyframes coralPulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(230, 126, 96, 0.4); }
+  50% { box-shadow: 0 0 40px rgba(230, 126, 96, 0.6); }
+}
+
+/* ==========================================================================
+   LOADING SCREEN
+   ========================================================================== */
+
+.loading-screen {
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, var(--darker-bg) 0%, var(--dark-bg) 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  font-family: 'Orbitron', monospace;
 }
 
-.App-link {
-  color: #61dafb;
+.loading-icon {
+  width: 100px;
+  height: 100px;
+  position: relative;
+  margin-bottom: 40px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.loading-cube {
+  width: 100%;
+  height: 100%;
+  border: 4px solid var(--claude-coral);
+  border-radius: 24px;
+  transform: rotate(45deg);
+  animation: pulse 2s ease-in-out infinite, coralPulse 2s ease-in-out infinite;
+  box-shadow: 0 0 60px var(--accent-glow);
+}
+
+.loading-text {
+  font-size: 20px;
+  color: var(--claude-coral);
+  letter-spacing: 8px;
+  font-weight: 700;
+  animation: fadeIn 1s ease-in-out;
+  text-shadow: 0 0 20px var(--accent-glow);
+}
+
+/* ==========================================================================
+   MAIN CONTAINER
+   ========================================================================== */
+
+.app-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--darker-bg) 0%, #1C1917 50%, var(--darker-bg) 100%);
+  font-family: 'Space Grotesk', sans-serif;
+  color: #FFFFFF;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Animated Background Elements */
+.bg-effect-left,
+.bg-effect-right {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.2;
+  pointer-events: none;
+  animation: float 6s ease-in-out infinite;
+}
+
+.bg-effect-left {
+  top: 10%;
+  left: -10%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, var(--claude-coral) 0%, transparent 70%);
+}
+
+.bg-effect-right {
+  bottom: 10%;
+  right: -10%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, var(--claude-salmon) 0%, transparent 70%);
+  animation-delay: 3s;
+}
+
+/* ==========================================================================
+   HEADER
+   ========================================================================== */
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 30px 40px;
+  position: relative;
+  z-index: 100;
+  animation: slideIn 0.6s ease-out;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.logo-image {
+  height: 50px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 12px var(--accent-glow));
+  transition: transform 0.3s ease;
+}
+
+.logo-image:hover {
+  transform: scale(1.05);
+}
+
+.logo-text {
+  font-size: 32px;
+  font-weight: 900;
+  letter-spacing: 3px;
+  margin: 0;
+  font-family: 'Orbitron', monospace;
+  background: linear-gradient(135deg, var(--claude-coral) 0%, var(--claude-warm) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 30px var(--accent-glow);
+  filter: drop-shadow(0 0 10px var(--accent-glow));
+}
+
+.header-actions {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+/* Settings & Wallet Buttons */
+.settings-btn,
+.wallet-btn {
+  padding: 14px 28px;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Rajdhani', sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  position: relative;
+  overflow: hidden;
+}
+
+.settings-btn {
+  background: rgba(230, 126, 96, 0.1);
+  border: 2px solid rgba(230, 126, 96, 0.3);
+  color: var(--claude-coral);
+}
+
+.settings-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(230, 126, 96, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.settings-btn:hover::before {
+  left: 100%;
+}
+
+.settings-btn:hover {
+  background: rgba(230, 126, 96, 0.2);
+  border-color: var(--claude-coral);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px var(--accent-glow);
+}
+
+.wallet-btn {
+  background: linear-gradient(135deg, var(--claude-coral) 0%, var(--claude-coral-dark) 100%);
+  border: 2px solid var(--claude-coral);
+  color: #FFFFFF;
+  box-shadow: 0 8px 24px var(--accent-glow);
+}
+
+.wallet-btn.connected {
+  background: linear-gradient(135deg, var(--claude-salmon) 0%, var(--claude-coral-dark) 100%);
+  border: 2px solid var(--claude-warm);
+  color: #FFFFFF;
+  box-shadow: 0 8px 24px rgba(242, 139, 106, 0.4);
+}
+
+.wallet-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(230, 126, 96, 0.5);
+}
+
+/* ==========================================================================
+   MAIN CONTENT
+   ========================================================================== */
+
+.main-content {
+  max-width: 580px;
+  margin: 0 auto;
+  padding: 0 20px;
+  position: relative;
+  z-index: 10;
+  animation: fadeIn 0.8s ease-out 0.2s both;
+}
+
+/* Info Banner */
+.info-banner {
+  background: linear-gradient(135deg, rgba(230, 126, 96, 0.1) 0%, rgba(230, 126, 96, 0.05) 100%);
+  border: 2px solid rgba(230, 126, 96, 0.3);
+  border-radius: 16px;
+  padding: 18px 24px;
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  color: var(--claude-warm);
+  font-weight: 500;
+  box-shadow: 0 4px 16px rgba(230, 126, 96, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.info-banner svg {
+  color: var(--claude-coral);
+}
+
+/* ==========================================================================
+   SWAP CARDS - CORAL THEMED
+   ========================================================================== */
+
+.swap-card {
+  background: rgba(26, 26, 26, 0.8);
+  backdrop-filter: blur(20px);
+  border: 2px solid rgba(230, 126, 96, 0.3);
+  border-radius: 24px;
+  padding: 32px;
+  margin-bottom: 24px;
+  box-shadow: 0 12px 40px rgba(230, 126, 96, 0.15);
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: visible;
+  z-index: 1;
+}
+
+.swap-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(230, 126, 96, 0.05) 0%, rgba(230, 126, 96, 0.02) 100%);
+  border-radius: 24px;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.swap-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 48px rgba(230, 126, 96, 0.25);
+  border-color: var(--claude-coral);
+}
+
+.swap-card:hover::before {
+  opacity: 1;
+}
+
+.swap-card.dropdown-active {
+  z-index: 99997;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.card-label {
+  font-size: 13px;
+  color: var(--claude-warm);
+  letter-spacing: 2px;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-family: 'Rajdhani', sans-serif;
+}
+
+.max-btn {
+  background: linear-gradient(135deg, var(--claude-coral) 0%, var(--claude-coral-dark) 100%);
+  border: none;
+  padding: 6px 16px;
+  border-radius: 8px;
+  color: #FFFFFF;
+  font-size: 11px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 12px var(--accent-glow);
+}
+
+.max-btn:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 6px 16px rgba(230, 126, 96, 0.4);
+}
+
+.card-input-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.amount-input {
+  background: transparent;
+  border: none;
+  color: #FFFFFF;
+  font-size: 36px;
+  font-weight: 700;
+  outline: none;
+  flex: 1;
+  font-family: 'Space Grotesk', sans-serif;
+  min-width: 80px;
+  transition: all 0.3s ease;
+}
+
+.amount-input::placeholder {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.amount-input:focus {
+  color: var(--claude-warm);
+}
+
+.card-usd-value {
+  font-size: 15px;
+  color: #999999;
+  font-weight: 500;
+  margin-top: 8px;
+}
+
+.card-balance {
+  margin-top: 12px;
+  font-size: 13px;
+  color: #999999;
+  display: flex;
+  justify-content: space-between;
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   TOKEN SELECTOR - CORAL THEMED
+   ========================================================================== */
+
+.token-selector {
+  position: relative;
+  z-index: 10;
+}
+
+.token-selector.active {
+  z-index: 99998;
+}
+
+.token-btn {
+  background: linear-gradient(135deg, rgba(230, 126, 96, 0.15) 0%, rgba(230, 126, 96, 0.1) 100%);
+  border: 2px solid rgba(230, 126, 96, 0.3);
+  border-radius: 14px;
+  padding: 12px 18px;
+  color: #FFFFFF;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+  font-family: 'Rajdhani', sans-serif;
+  min-width: 120px;
+  justify-content: space-between;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(230, 126, 96, 0.1);
+}
+
+.token-btn:hover {
+  background: linear-gradient(135deg, rgba(230, 126, 96, 0.25) 0%, rgba(230, 126, 96, 0.2) 100%);
+  border-color: var(--claude-coral);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px var(--accent-glow);
+}
+
+.token-btn:hover svg {
+  color: var(--claude-warm);
+}
+
+.token-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  color: var(--claude-coral);
+}
+
+.token-dropdown {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  background: rgba(26, 26, 26, 0.98);
+  backdrop-filter: blur(20px);
+  border: 2px solid rgba(230, 126, 96, 0.3);
+  border-radius: 16px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-width: 240px;
+  max-height: 320px;
+  z-index: 99999;
+  box-shadow: 0 16px 48px rgba(230, 126, 96, 0.3);
+  animation: fadeIn 0.3s ease-out;
+}
+
+.token-option {
+  width: 100%;
+  padding: 16px 20px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(230, 126, 96, 0.1);
+  color: #FFFFFF;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 15px;
+  font-family: 'Space Grotesk', sans-serif;
+  transition: all 0.2s ease;
+}
+
+.token-option:last-child {
+  border-bottom: none;
+}
+
+.token-option:hover {
+  background: linear-gradient(135deg, rgba(230, 126, 96, 0.2) 0%, rgba(230, 126, 96, 0.1) 100%);
+}
+
+.token-option:hover svg {
+  transform: scale(1.1);
+  color: var(--claude-warm);
+}
+
+.token-option.active {
+  background: linear-gradient(135deg, rgba(230, 126, 96, 0.25) 0%, rgba(230, 126, 96, 0.15) 100%);
+}
+
+.token-option.disabled {
+  color: #666666;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.token-option.disabled:hover {
+  background: transparent;
+}
+
+.token-option.disabled svg {
+  color: #666666;
+}
+
+.token-info {
+  flex: 1;
+  text-align: left;
+}
+
+.token-symbol {
+  font-weight: 700;
+  font-size: 15px;
+  font-family: 'Rajdhani', sans-serif;
+  color: #FFFFFF;
+}
+
+.token-name {
+  font-size: 12px;
+  color: #999999;
+  margin-top: 2px;
+}
+
+.token-balance {
+  font-size: 13px;
+  color: var(--claude-warm);
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   SWAP BUTTON - CORAL THEMED
+   ========================================================================== */
+
+.swap-button-container {
+  display: flex;
+  justify-content: center;
+  margin: -28px 0;
+  position: relative;
+  z-index: 1;
+}
+
+.swap-icon-btn {
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, var(--claude-coral) 0%, var(--claude-coral-dark) 100%);
+  border: 4px solid var(--darker-bg);
+  border-radius: 50%;
+  color: #FFFFFF;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.4s ease;
+  box-shadow: 0 8px 24px var(--accent-glow);
+  z-index: 10;
+  position: relative;
+}
+
+.swap-icon-btn:hover {
+  transform: rotate(180deg) scale(1.15);
+  box-shadow: 0 12px 32px rgba(230, 126, 96, 0.5);
+}
+
+.swap-icon-btn:active {
+  transform: rotate(180deg) scale(1.05);
+}
+
+/* ==========================================================================
+   EXCHANGE RATE & TRANSACTION SUCCESS
+   ========================================================================== */
+
+.exchange-rate {
+  background: linear-gradient(135deg, rgba(230, 126, 96, 0.1) 0%, rgba(230, 126, 96, 0.05) 100%);
+  border: 2px solid rgba(230, 126, 96, 0.3);
+  border-radius: 16px;
+  padding: 16px 24px;
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  box-shadow: 0 4px 16px rgba(230, 126, 96, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.rate-label {
+  color: #999999;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 12px;
+}
+
+.rate-value {
+  color: var(--claude-warm);
+  font-weight: 700;
+  font-size: 15px;
+  font-family: 'Rajdhani', sans-serif;
+}
+
+.tx-success {
+  margin-top: 20px;
+  padding: 16px 24px;
+  background: linear-gradient(135deg, rgba(230, 126, 96, 0.15) 0%, rgba(230, 126, 96, 0.1) 100%);
+  border: 2px solid var(--claude-coral);
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 4px 16px var(--accent-glow);
+  animation: fadeIn 0.5s ease-out;
+}
+
+.tx-link {
+  color: var(--claude-warm);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  font-family: 'Rajdhani', sans-serif;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.tx-link:hover {
+  color: var(--claude-coral);
+  transform: translateX(4px);
+}
+
+/* ==========================================================================
+   EXECUTE SWAP BUTTON - CORAL HERO
+   ========================================================================== */
+
+.execute-swap-btn {
+  width: 100%;
+  padding: 20px;
+  background: linear-gradient(135deg, var(--claude-coral) 0%, var(--claude-coral-dark) 100%);
+  border: none;
+  border-radius: 16px;
+  color: #FFFFFF;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  font-family: 'Rajdhani', sans-serif;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  box-shadow: 0 8px 24px var(--accent-glow);
+  position: relative;
+  overflow: hidden;
+}
+
+.execute-swap-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.execute-swap-btn:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.execute-swap-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(230, 126, 96, 0.5);
+  background: linear-gradient(135deg, var(--claude-warm) 0%, var(--claude-coral) 100%);
+}
+
+.execute-swap-btn:active {
+  transform: translateY(-1px);
+}
+
+.execute-swap-btn.disabled {
+  background: linear-gradient(135deg, rgba(230, 126, 96, 0.2) 0%, rgba(230, 126, 96, 0.15) 100%);
+  color: #666666;
+  cursor: not-allowed;
+  box-shadow: none;
+  opacity: 0.6;
+}
+
+.execute-swap-btn.disabled:hover {
+  transform: none;
+  box-shadow: none;
+  background: linear-gradient(135deg, rgba(230, 126, 96, 0.2) 0%, rgba(230, 126, 96, 0.15) 100%);
+}
+
+.execute-swap-btn.disabled::before {
+  display: none;
+}
+
+/* ==========================================================================
+   TRANSACTION DETAILS
+   ========================================================================== */
+
+.transaction-details {
+  margin-top: 28px;
+  padding: 20px 24px;
+  background: linear-gradient(135deg, rgba(230, 126, 96, 0.08) 0%, rgba(230, 126, 96, 0.04) 100%);
+  border: 2px solid rgba(230, 126, 96, 0.2);
+  border-radius: 16px;
+  font-size: 13px;
+  color: #CCCCCC;
+  box-shadow: 0 4px 16px rgba(230, 126, 96, 0.08);
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+.detail-row:last-child {
+  margin-bottom: 0;
+}
+
+.detail-value {
+  color: var(--claude-warm);
+  font-weight: 700;
+  font-family: 'Rajdhani', sans-serif;
+}
+
+.detail-value.impact {
+  color: var(--claude-coral);
+}
+
+/* ==========================================================================
+   FOOTER - CORAL THEMED
+   ========================================================================== */
+
+.footer {
+  max-width: 1400px;
+  margin: 80px auto 40px;
+  padding: 32px 40px;
+  border-top: 2px solid rgba(230, 126, 96, 0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: #999999;
+  position: relative;
+  z-index: 10;
+  font-weight: 500;
+}
+
+.footer-links {
+  display: flex;
+  gap: 32px;
+}
+
+.footer-links a {
+  color: #999999;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  position: relative;
+}
+
+.footer-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--claude-coral);
+  transition: width 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: var(--claude-coral);
+}
+
+.footer-links a:hover::after {
+  width: 100%;
+}
+
+/* ==========================================================================
+   SETTINGS MODAL - CORAL THEMED
+   ========================================================================== */
+
+.settings-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100000;
+  animation: fadeIn 0.3s ease-out;
+  padding: 20px;
+}
+
+.settings-modal {
+  background: linear-gradient(135deg, var(--dark-bg) 0%, #1C1917 100%);
+  border: 2px solid rgba(230, 126, 96, 0.3);
+  border-radius: 24px;
+  width: 100%;
+  max-width: 540px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(230, 126, 96, 0.4);
+  animation: fadeIn 0.4s ease-out;
+}
+
+.settings-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 28px 32px;
+  border-bottom: 2px solid rgba(230, 126, 96, 0.2);
+}
+
+.settings-header h2 {
+  font-size: 28px;
+  font-weight: 900;
+  font-family: 'Orbitron', monospace;
+  background: linear-gradient(135deg, var(--claude-coral) 0%, var(--claude-warm) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0;
+  letter-spacing: 2px;
+}
+
+.close-btn {
+  width: 40px;
+  height: 40px;
+  background: rgba(230, 126, 96, 0.1);
+  border: 2px solid rgba(230, 126, 96, 0.3);
+  border-radius: 12px;
+  color: var(--claude-coral);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.close-btn:hover {
+  background: rgba(230, 126, 96, 0.2);
+  border-color: var(--claude-coral);
+  transform: rotate(90deg);
+}
+
+.settings-content {
+  padding: 32px;
+}
+
+.setting-section {
+  margin-bottom: 32px;
+  padding-bottom: 32px;
+  border-bottom: 2px solid rgba(230, 126, 96, 0.1);
+}
+
+.setting-section:last-of-type {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.setting-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--claude-warm);
+  margin-bottom: 8px;
+  font-family: 'Rajdhani', sans-serif;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.setting-label svg {
+  color: var(--claude-coral);
+}
+
+.setting-description {
+  font-size: 13px;
+  color: #CCCCCC;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+/* Slippage Options */
+.slippage-options {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.slippage-options button {
+  padding: 14px 20px;
+  background: rgba(230, 126, 96, 0.1);
+  border: 2px solid rgba(230, 126, 96, 0.3);
+  border-radius: 12px;
+  color: #FFFFFF;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Rajdhani', sans-serif;
+}
+
+.slippage-options button:hover {
+  background: rgba(230, 126, 96, 0.2);
+  border-color: var(--claude-coral);
+  transform: translateY(-2px);
+}
+
+.slippage-options button.active {
+  background: linear-gradient(135deg, var(--claude-coral) 0%, var(--claude-coral-dark) 100%);
+  border-color: var(--claude-coral);
+  color: #FFFFFF;
+  box-shadow: 0 4px 16px var(--accent-glow);
+}
+
+.custom-slippage {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: rgba(230, 126, 96, 0.1);
+  border: 2px solid rgba(230, 126, 96, 0.3);
+  border-radius: 12px;
+}
+
+.custom-slippage input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: #FFFFFF;
+  font-size: 14px;
+  font-weight: 700;
+  outline: none;
+  font-family: 'Rajdhani', sans-serif;
+}
+
+.custom-slippage span {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--claude-warm);
+}
+
+/* Deadline Input */
+.deadline-input {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  background: rgba(230, 126, 96, 0.1);
+  border: 2px solid rgba(230, 126, 96, 0.3);
+  border-radius: 12px;
+  max-width: 200px;
+}
+
+.deadline-input input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: #FFFFFF;
+  font-size: 16px;
+  font-weight: 700;
+  outline: none;
+  font-family: 'Rajdhani', sans-serif;
+}
+
+.deadline-input span {
+  font-size: 14px;
+  font-weight: 600;
+  color: #CCCCCC;
+  white-space: nowrap;
+}
+
+/* RPC Options */
+.rpc-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.rpc-options button {
+  padding: 16px 20px;
+  background: rgba(230, 126, 96, 0.1);
+  border: 2px solid rgba(230, 126, 96, 0.3);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+}
+
+.rpc-options button:hover {
+  background: rgba(230, 126, 96, 0.15);
+  border-color: var(--claude-coral);
+  transform: translateX(4px);
+}
+
+.rpc-options button.active {
+  background: linear-gradient(135deg, var(--claude-coral) 0%, var(--claude-coral-dark) 100%);
+  border-color: var(--claude-coral);
+  box-shadow: 0 4px 16px var(--accent-glow);
+}
+
+.rpc-options button.active .rpc-name,
+.rpc-options button.active .rpc-speed {
+  color: #FFFFFF;
+}
+
+.rpc-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: #FFFFFF;
+  font-family: 'Rajdhani', sans-serif;
+  margin-bottom: 4px;
+}
+
+.rpc-speed {
+  font-size: 12px;
+  color: var(--claude-warm);
+  font-weight: 600;
+}
+
+/* Toggle Settings */
+.setting-toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.toggle-info {
+  flex: 1;
+}
+
+.toggle-switch {
+  position: relative;
+  width: 56px;
+  height: 30px;
+  flex-shrink: 0;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(230, 126, 96, 0.2);
+  border: 2px solid rgba(230, 126, 96, 0.3);
+  border-radius: 30px;
+  transition: all 0.3s ease;
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 2px;
+  bottom: 2px;
+  background: #FFFFFF;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.toggle-switch input:checked + .toggle-slider {
+  background: linear-gradient(135deg, var(--claude-coral) 0%, var(--claude-coral-dark) 100%);
+  border-color: var(--claude-coral);
+}
+
+.toggle-switch input:checked + .toggle-slider:before {
+  transform: translateX(26px);
+}
+
+/* Settings Footer */
+.settings-footer {
+  margin-top: 32px;
+  padding-top: 32px;
+  border-top: 2px solid rgba(230, 126, 96, 0.2);
+  display: flex;
+  gap: 12px;
+}
+
+.reset-btn,
+.save-btn {
+  flex: 1;
+  padding: 16px 24px;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Rajdhani', sans-serif;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.reset-btn {
+  background: rgba(230, 126, 96, 0.1);
+  border: 2px solid rgba(230, 126, 96, 0.3);
+  color: var(--claude-coral);
+}
+
+.reset-btn:hover {
+  background: rgba(230, 126, 96, 0.2);
+  border-color: var(--claude-coral);
+  transform: translateY(-2px);
+}
+
+.save-btn {
+  background: linear-gradient(135deg, var(--claude-coral) 0%, var(--claude-coral-dark) 100%);
+  border: 2px solid var(--claude-coral);
+  color: #FFFFFF;
+  box-shadow: 0 4px 16px var(--accent-glow);
+}
+
+.save-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(230, 126, 96, 0.5);
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: 24px;
+    padding: 24px 20px;
   }
-  to {
-    transform: rotate(360deg);
+
+  .header-actions {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .logo-text {
+    font-size: 24px;
+  }
+
+  .main-content {
+    padding: 0 16px;
+  }
+
+  .swap-card {
+    padding: 24px;
+  }
+
+  .amount-input {
+    font-size: 28px;
+  }
+
+  .token-btn {
+    min-width: 100px;
+    padding: 10px 14px;
+    font-size: 13px;
+  }
+
+  .footer {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+    margin-top: 60px;
+  }
+
+  .footer-links {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-text {
+    font-size: 20px;
+    letter-spacing: 2px;
+  }
+
+  .settings-btn span {
+    display: none;
+  }
+
+  .wallet-btn {
+    font-size: 12px;
+    padding: 12px 20px;
+  }
+
+  .amount-input {
+    font-size: 24px;
+  }
+
+  .token-btn {
+    min-width: 90px;
+    padding: 8px 12px;
+    font-size: 12px;
+    gap: 6px;
+  }
+
+  .card-input-row {
+    gap: 10px;
+  }
+
+  .execute-swap-btn {
+    font-size: 14px;
+    padding: 18px;
+  }
+}
+
+/* ==========================================================================
+   PREMIUM CORAL EFFECTS
+   ========================================================================== */
+
+@media (hover: hover) {
+  .swap-card {
+    animation: glow 3s ease-in-out infinite;
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Selection color */
+::selection {
+  background: var(--accent-glow);
+  color: #FFFFFF;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(230, 126, 96, 0.1);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(230, 126, 96, 0.3);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--claude-coral);
+}
+
+/* Responsive for Settings */
+@media (max-width: 580px) {
+  .settings-modal {
+    border-radius: 16px;
+    max-height: 100vh;
+  }
+
+  .settings-header {
+    padding: 20px 24px;
+  }
+
+  .settings-header h2 {
+    font-size: 22px;
+  }
+
+  .settings-content {
+    padding: 24px;
+  }
+
+  .slippage-options {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .settings-footer {
+    flex-direction: column;
   }
 }
