@@ -298,7 +298,7 @@
 }
 
 /* ==========================================================================
-   SWAP CARDS - CORAL THEMED
+   SWAP CARDS - CORAL THEMED (FIXED SPACING)
    ========================================================================== */
 
 .swap-card {
@@ -307,7 +307,7 @@
   border: 2px solid rgba(230, 126, 96, 0.3);
   border-radius: 24px;
   padding: 32px;
-  margin-bottom: 24px;
+  margin-bottom: 70px; /* INCREASED FROM 24px TO 48px FOR BUTTON SPACE */
   box-shadow: 0 12px 40px rgba(230, 126, 96, 0.15);
   transition: all 0.4s ease;
   position: relative;
@@ -566,13 +566,13 @@
 }
 
 /* ==========================================================================
-   SWAP BUTTON - CORAL THEMED
+   SWAP BUTTON - CORAL THEMED (FIXED POSITIONING)
    ========================================================================== */
 
 .swap-button-container {
   display: flex;
   justify-content: center;
-  margin: -28px 0;
+  margin: -35px 0; /* INCREASED FROM -28px TO -40px FOR BETTER CENTERING */
   position: relative;
   z-index: 1;
 }
